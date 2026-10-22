@@ -1,0 +1,223 @@
+
+public class ExceptionHandling {
+
+    // Custom Exception
+    static class InsufficientBalanceException extends Exception {
+        public InsufficientBalanceException(String message) {
+            super(message);
+        }
+    }
+
+    // Abstract Class
+    static abstract class BankAccount {
+        protected String accountHolder;
+        protected double balance;
+
+        public BankAccount(String accountHolder, double balance) {
+            if (balance < 0) {
+                throw new IllegalArgumentException(
+                        "Initial balance cannot be negative."
+                );
+            }
+
+            this.accountHolder = accountHolder;
+            this.balance = balance;
+        }
+
+        public void deposit(double amount) {
+            if (amount <= 0) {
+                throw new IllegalArgumentException(
+                        "Deposit amount must be greater than zero."
+                );
+            }
+
+            balance += amount;
+            System.out.println("Deposited: $" + amount);
+        }
+
+        public abstract void withdraw(double amount)
+                throws InsufficientBalanceException;
+
+        public void displayBalance() {
+            System.out.println("Account Holder: " + accountHolder);
+            System.out.println("Balance: $" + balance);
+        }
+    }
+
+    // Savings Account
+    static class SavingsAccount extends BankAccount {
+
+        public SavingsAccount(String name, double balance) {
+            super(name, balance);
+        }
+
+        @Override
+        public void withdraw(double amount)
+                throws InsufficientBalanceException {
+
+            if (amount <= 0) {
+                throw new IllegalArgumentException(
+                        "Withdrawal must be greater than zero."
+                );
+            }
+
+            if (amount > balance) {
+                throw new InsufficientBalanceException(
+                        "Insufficient balance in Savings Account."
+                );
+            }
+
+            balance -= amount;
+            System.out.println("Savings withdrawal: $" + amount);
+        }
+    }
+
+    // Current Account
+    static class CurrentAccount extends BankAccount {
+
+        public CurrentAccount(String name, double balance) {
+            super(name, balance);
+        }
+
+        @Override
+        public void withdraw(double amount)
+                throws InsufficientBalanceException {
+
+            if (amount <= 0) {
+                throw new IllegalArgumentException(
+                        "Withdrawal must be greater than zero."
+                );
+            }
+
+            if (amount > balance) {
+                throw new InsufficientBalanceException(
+                        "Insufficient balance in Current Account."
+                );
+            }
+
+            balance -= amount;
+            System.out.println("Current withdrawal: $" + amount);
+        }
+    }
+
+    // Student Account
+    static class StudentAccount extends BankAccount {
+
+        public StudentAccount(String name, double balance) {
+            super(name, balance);
+        }
+
+        @Override
+        public void withdraw(double amount)
+                throws InsufficientBalanceException {
+
+            if (amount <= 0) {
+                throw new IllegalArgumentException(
+                        "Withdrawal must be greater than zero."
+                );
+            }
+
+            if (amount > balance) {
+                throw new InsufficientBalanceException(
+                        "Insufficient balance in Student Account."
+                );
+            }
+
+            balance -= amount;
+            System.out.println("Student withdrawal: $" + amount);
+        }
+    }
+
+    // Handle NumberFormatException
+    static void convertToNumber(String value) {
+        try {
+            int number = Integer.parseInt(value);
+            System.out.println("Converted number: " + number);
+        } catch (NumberFormatException e) {
+            System.out.println("Error: Input is not a valid integer.");
+        }
+    }
+
+    // Main Method
+    public static void main(String[] args) {
+
+        System.out.println("===== BANK ACCOUNT EXCEPTION HANDLING =====");
+
+        try {
+            BankAccount savings =
+                    new SavingsAccount("Ali", 500);
+
+            savings.displayBalance();
+
+            savings.deposit(100);
+            savings.withdraw(200);
+
+            // This causes a custom exception
+            savings.withdraw(1000);
+
+        } catch (InsufficientBalanceException e) {
+            System.out.println("Bank Error: " + e.getMessage());
+
+        } catch (IllegalArgumentException e) {
+            System.out.println("Input Error: " + e.getMessage());
+
+        } finally {
+            System.out.println("Savings transaction completed.");
+        }
+
+        System.out.println("\n===== CURRENT ACCOUNT =====");
+
+        try {
+            BankAccount current =
+                    new CurrentAccount("Ahmed", 1000);
+
+            current.deposit(200);
+            current.withdraw(300);
+            current.displayBalance();
+
+        } catch (InsufficientBalanceException e) {
+            System.out.println("Bank Error: " + e.getMessage());
+
+        } catch (IllegalArgumentException e) {
+            System.out.println("Input Error: " + e.getMessage());
+
+        } finally {
+            System.out.println("Current account transaction completed.");
+        }
+
+        System.out.println("\n===== STUDENT ACCOUNT =====");
+
+        try {
+            BankAccount student =
+                    new StudentAccount("Hawa", 150);
+
+            student.withdraw(50);
+            student.displayBalance();
+
+        } catch (InsufficientBalanceException e) {
+            System.out.println("Bank Error: " + e.getMessage());
+
+        } finally {
+            System.out.println("Student account transaction completed.");
+        }
+
+        System.out.println("\n===== NUMBER FORMAT EXCEPTION =====");
+
+        convertToNumber("123");
+        convertToNumber("Hello");
+
+        System.out.println("\n===== ILLEGAL ARGUMENT EXCEPTION =====");
+
+        try {
+            BankAccount account =
+                    new SavingsAccount("Fatima", 200);
+
+            account.deposit(-50);
+
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
+        System.out.println("\nProgram finished successfully.");
+    }
+}

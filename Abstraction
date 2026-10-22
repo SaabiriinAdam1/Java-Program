@@ -1,0 +1,186 @@
+public class Abstraction {
+
+    // Abstract Class
+    static abstract class BankAccount {
+        protected String accountHolder;
+        protected double balance;
+
+        public BankAccount(String accountHolder, double balance) {
+            this.accountHolder = accountHolder;
+            this.balance = balance;
+        }
+
+        // Abstract Methods
+        public abstract void deposit(double amount);
+
+        public abstract void withdraw(double amount);
+
+        public abstract void displayAccountType();
+
+        // Concrete Method
+        public void displayBalance() {
+            System.out.println("Account Holder: " + accountHolder);
+            System.out.println("Balance: $" + balance);
+        }
+    }
+
+    // Savings Account
+    static class SavingsAccount extends BankAccount {
+
+        public SavingsAccount(String name, double balance) {
+            super(name, balance);
+        }
+
+        @Override
+        public void deposit(double amount) {
+            if (amount > 0) {
+                balance += amount;
+                System.out.println(
+                        "Savings: Deposited $" + amount
+                );
+            } else {
+                System.out.println(
+                        "Deposit amount must be positive."
+                );
+            }
+        }
+
+        @Override
+        public void withdraw(double amount) {
+            if (amount > 0 && amount <= balance) {
+                balance -= amount;
+                System.out.println(
+                        "Savings: Withdrawn $" + amount
+                );
+            } else {
+                System.out.println(
+                        "Invalid amount or insufficient balance."
+                );
+            }
+        }
+
+        @Override
+        public void displayAccountType() {
+            System.out.println("Account Type: Savings Account");
+        }
+    }
+
+    // Current Account
+    static class CurrentAccount extends BankAccount {
+
+        public CurrentAccount(String name, double balance) {
+            super(name, balance);
+        }
+
+        @Override
+        public void deposit(double amount) {
+            if (amount > 0) {
+                balance += amount;
+                System.out.println(
+                        "Current: Deposited $" + amount
+                );
+            } else {
+                System.out.println(
+                        "Deposit amount must be positive."
+                );
+            }
+        }
+
+        @Override
+        public void withdraw(double amount) {
+            if (amount > 0 && amount <= balance) {
+                balance -= amount;
+                System.out.println(
+                        "Current: Withdrawn $" + amount
+                );
+            } else {
+                System.out.println(
+                        "Invalid amount or insufficient balance."
+                );
+            }
+        }
+
+        @Override
+        public void displayAccountType() {
+            System.out.println("Account Type: Current Account");
+        }
+    }
+
+    // Student Account
+    static class StudentAccount extends BankAccount {
+
+        public StudentAccount(String name, double balance) {
+            super(name, balance);
+        }
+
+        @Override
+        public void deposit(double amount) {
+            if (amount > 0) {
+                balance += amount;
+                System.out.println(
+                        "Student: Deposited $" + amount
+                );
+            } else {
+                System.out.println(
+                        "Deposit amount must be positive."
+                );
+            }
+        }
+
+        @Override
+        public void withdraw(double amount) {
+            if (amount > 0 && amount <= balance) {
+                balance -= amount;
+                System.out.println(
+                        "Student: Withdrawn $" + amount
+                );
+            } else {
+                System.out.println(
+                        "Invalid amount or insufficient balance."
+                );
+            }
+        }
+
+        @Override
+        public void displayAccountType() {
+            System.out.println("Account Type: Student Account");
+        }
+    }
+
+    // Main Method
+    public static void main(String[] args) {
+
+        System.out.println("===== SAVINGS ACCOUNT =====");
+
+        BankAccount savings =
+                new SavingsAccount("Ali", 500);
+
+        savings.displayAccountType();
+        savings.displayBalance();
+        savings.deposit(200);
+        savings.withdraw(100);
+        savings.displayBalance();
+
+        System.out.println("\n===== CURRENT ACCOUNT =====");
+
+        BankAccount current =
+                new CurrentAccount("Ahmed", 1000);
+
+        current.displayAccountType();
+        current.displayBalance();
+        current.deposit(300);
+        current.withdraw(150);
+        current.displayBalance();
+
+        System.out.println("\n===== STUDENT ACCOUNT =====");
+
+        BankAccount student =
+                new StudentAccount("Hawa", 250);
+
+        student.displayAccountType();
+        student.displayBalance();
+        student.deposit(100);
+        student.withdraw(50);
+        student.displayBalance();
+    }
+}
